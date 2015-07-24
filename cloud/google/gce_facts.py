@@ -67,7 +67,7 @@ class GceMetadata(object):
         Example: "projects/11111111111/zones/us-central1-b" becomes "us-central1-b"
         Also process project sshKeys string and convert it to a list.
         """
-        if not 'instance' in data:
+        if not 'instance' in data['ansible_gce']:
             self.module.fail_json(msg="Instance data could not be found. This module should be run from within a GCE instance.")
         machine_type = data['ansible_gce']['instance']['machineType'].split('/')[3]
         zone = data['ansible_gce']['instance']['zone'].split('/')[3]
