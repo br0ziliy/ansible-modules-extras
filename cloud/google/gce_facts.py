@@ -20,7 +20,7 @@ DOCUMENTATION = '''
 ---
 module: gce_facts
 short_description: Gathers facts about instances within Google Cloud infrastructure
-version_added: "1.0"
+version_added: "2.0"
 options:
 description:
      - This module fetches data from the metadata servers in Google Cloud as per
@@ -67,6 +67,8 @@ class GceMetadata(object):
         Example: "projects/11111111111/zones/us-central1-b" becomes "us-central1-b"
         Also process project sshKeys string and convert it to a list.
         """
+        if not 'instance' in data:
+            self.module.fail_json(msg="Instance data could not be found. This module should be run from within a GCE instance.")
         machine_type = data['ansible_gce']['instance']['machineType'].split('/')[3]
         zone = data['ansible_gce']['instance']['zone'].split('/')[3]
         data['ansible_gce']['instance']['machineType'] = machine_type
